@@ -17,10 +17,16 @@ RUN if [ "${NODE_VERSION}" != "nne" ]; then su vscode -c "umask 0002 && . /usr/l
 # COPY requirements.txt /tmp/pip-tmp/
 # RUN pip3 --disable-pip-version-check --no-cache-dir install -r /tmp/pip-tmp/requirements.txt \
 #    && rm -rf /tmp/pip-tmp
-RUN pip install poetry==1.1.10 pre-commit
+RUN pip install -U pip && \
+    pip install -U packaging filelock lockfile && \
+    pip install "poetry>=1.2.0" pre-commit
+RUN poetry self update
 COPY ../poetry.lock ../pyproject.toml /tmp/pip-tmp/rasa/
-RUN cd /tmp/pip-tmp/rasa && poetry config virtualenvs.create false \
-  && poetry install --no-interaction --no-ansi --no-root
+RUN cd /tmp/pip-tmp/rasa && \
+    poetry config virtualenvs.create false && \
+    poetry install --no-interaction --no-ansi --no-root
+RUN pip install -U packaging filelock lockfile
+RUN mkdir /example && chmod o=u /example
 
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \

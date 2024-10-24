@@ -63,10 +63,12 @@ clean:
 	rm -rf docs/.docusaurus
 
 install:
+	pip install -U packaging filelock lockfile
 	poetry run python -m pip install -U pip
 	poetry install
 
 install-mitie:
+	pip install -U packaging filelock lockfile
 	poetry run python -m pip install -U pip
 	poetry run python -m pip install -U git+https://github.com/tmbo/MITIE.git#egg=mitie
 
