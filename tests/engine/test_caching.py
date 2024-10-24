@@ -29,6 +29,8 @@ from rasa.engine.storage.storage import ModelStorage
 
 @dataclasses.dataclass
 class TestCacheableOutput:
+    
+    __test__ = False
 
     value: Dict
     size_in_mb: int = 0

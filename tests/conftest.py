@@ -444,7 +444,7 @@ def trained_e2e_model_cache(
     _trained_e2e_model_cache: Path,
     tmp_path_factory: TempPathFactory,
     monkeypatch: MonkeyPatch,
-) -> Path:
+) -> Generator[Path, None, None]:
     copied_cache = tmp_path_factory.mktemp("copy")
     rasa.utils.common.copy_directory(_trained_e2e_model_cache, copied_cache)
 

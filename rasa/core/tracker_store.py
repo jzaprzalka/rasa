@@ -51,7 +51,7 @@ from rasa.shared.exceptions import ConnectionException, RasaException
 from rasa.shared.nlu.constants import INTENT_NAME_KEY
 from rasa.utils.endpoints import EndpointConfig
 import sqlalchemy as sa
-from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
+from sqlalchemy.orm import declarative_base, DeclarativeMeta
 
 if TYPE_CHECKING:
     import boto3.resources.factory.dynamodb.Table
@@ -941,7 +941,7 @@ def _create_sequence(table_name: Text) -> "Sequence":
 
     Returns: A `Sequence` object
     """
-    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy.orm import declarative_base
 
     sequence_name = f"{table_name}_seq"
     Base = declarative_base()
@@ -1163,7 +1163,7 @@ class SQLTrackerStore(TrackerStore, SerializedTrackerAsText):
             port = parsed.port or port
             host = parsed.hostname or host
 
-        return sa.engine.url.URL(
+        return sa.engine.url.URL.create(
             dialect,
             username,
             password,

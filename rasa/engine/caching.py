@@ -21,7 +21,7 @@ import rasa.shared.utils.common
 from rasa.constants import MINIMUM_COMPATIBLE_VERSION
 import sqlalchemy as sa
 import sqlalchemy.orm
-from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
+from sqlalchemy.orm import declarative_base, DeclarativeMeta
 
 from rasa.engine.storage.storage import ModelStorage
 

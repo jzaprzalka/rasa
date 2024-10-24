@@ -2,8 +2,8 @@ import logging
 import os
 from typing import Text, Dict, List, Optional, Any
 
-from packaging import version
-from packaging.version import LegacyVersion
+from packaging_legacy import version
+from packaging_legacy.version import LegacyVersion
 from pykwalify.errors import SchemaError
 
 from ruamel.yaml.constructor import DuplicateKeyError
@@ -131,7 +131,7 @@ def validate_yaml_schema(
     from pykwalify.core import Core
     from pykwalify.errors import SchemaError
     from ruamel.yaml import YAMLError
-    import pkg_resources
+    import importlib.resources
     import logging
 
     log = logging.getLogger("pykwalify")
@@ -149,36 +149,40 @@ def validate_yaml_schema(
     except (YAMLError, DuplicateKeyError) as e:
         raise YamlSyntaxException(underlying_yaml_exception=e)
 
-    schema_file = pkg_resources.resource_filename(package_name, schema_path)
-    schema_utils_file = pkg_resources.resource_filename(
-        PACKAGE_NAME, RESPONSES_SCHEMA_FILE
-    )
-    schema_extensions = pkg_resources.resource_filename(
-        PACKAGE_NAME, SCHEMA_EXTENSIONS_FILE
-    )
+    schema_file_ref = importlib.resources.files(package_name) / schema_path
+    schema_utils_file_ref = importlib.resources.files(PACKAGE_NAME) / RESPONSES_SCHEMA_FILE
+    schema_extensions_ref = importlib.resources.files(PACKAGE_NAME) / SCHEMA_EXTENSIONS_FILE
+    
+    with (
+        importlib.resources.as_file(schema_file_ref) as schema_file,
+        importlib.resources.as_file(schema_utils_file_ref) as schema_utils_file,
+        importlib.resources.as_file(schema_extensions_ref) as schema_extensions,
+    ):
+        schema_file = schema_file.as_posix()
+        schema_utils_file = schema_utils_file.as_posix()
+        schema_extensions = schema_extensions.as_posix()
+        # Load schema content using our YAML loader as `pykwalify` uses a global instance
+        # which can fail when used concurrently
+        schema_content = rasa.shared.utils.io.read_yaml_file(schema_file)
+        schema_utils_content = rasa.shared.utils.io.read_yaml_file(schema_utils_file)
+        schema_content = dict(schema_content, **schema_utils_content)
 
-    # Load schema content using our YAML loader as `pykwalify` uses a global instance
-    # which can fail when used concurrently
-    schema_content = rasa.shared.utils.io.read_yaml_file(schema_file)
-    schema_utils_content = rasa.shared.utils.io.read_yaml_file(schema_utils_file)
-    schema_content = dict(schema_content, **schema_utils_content)
-
-    c = Core(
-        source_data=source_data,
-        schema_data=schema_content,
-        extensions=[schema_extensions],
-    )
-
-    try:
-        c.validate(raise_exception=True)
-    except SchemaError:
-        raise YamlValidationException(
-            "Please make sure the file is correct and all "
-            "mandatory parameters are specified. Here are the errors "
-            "found during validation",
-            c.errors,
-            content=source_data,
+        c = Core(
+            source_data=source_data,
+            schema_data=schema_content,
+            extensions=[schema_extensions],
         )
+
+        try:
+            c.validate(raise_exception=True)
+        except SchemaError:
+            raise YamlValidationException(
+                "Please make sure the file is correct and all "
+                "mandatory parameters are specified. Here are the errors "
+                "found during validation",
+                c.errors,
+                content=source_data,
+            )
 
 
 def validate_training_data(json_data: Dict[Text, Any], schema: Dict[Text, Any]) -> None:

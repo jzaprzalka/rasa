@@ -4,8 +4,7 @@ import logging
 from asyncio import AbstractEventLoop
 from typing import Any, Dict, Optional, Text, Generator
 
-from sqlalchemy.orm import Session
-from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
+from sqlalchemy.orm import Session, declarative_base, DeclarativeMeta
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import Text as SqlAlchemyText  # to avoid name clash with typing.Text
 

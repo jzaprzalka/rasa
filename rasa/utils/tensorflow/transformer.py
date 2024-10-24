@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 # TODO: The following is not (yet) available via tf.keras
-from keras.utils.control_flow_util import smart_cond
+# from keras.utils.control_flow_util import smart_cond
 from tensorflow.keras import backend as K
 
 import rasa.shared.utils.cli
@@ -257,7 +257,7 @@ class MultiHeadAttention(tf.keras.layers.Layer):
 
             return logits + drop_mask * -1e9
 
-        return smart_cond(training, droped_logits, lambda: tf.identity(logits))
+        return tf.cond(training, droped_logits, lambda: tf.identity(logits))
 
     def _scaled_dot_product_attention(
         self,

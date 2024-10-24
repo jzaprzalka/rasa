@@ -4,7 +4,7 @@ from sanic.request import Request
 from typing import Text, Optional, Dict, Any, Callable, Awaitable
 
 from sanic.response import HTTPResponse
-from webexteamssdk import WebexTeamsAPI, Webhook
+from webexpythonsdk import WebexAPI, Webhook
 
 from rasa.core.channels.channel import InputChannel
 from rasa.core.channels.channel import UserMessage, OutputChannel
@@ -21,7 +21,7 @@ class WebexTeamsBot(OutputChannel):
 
     def __init__(self, access_token: Optional[Text], room: Optional[Text]) -> None:
         self.room = room
-        self.api = WebexTeamsAPI(access_token)
+        self.api = WebexAPI(access_token)
 
     async def send_text_message(
         self, recipient_id: Text, text: Text, **kwargs: Any
@@ -69,7 +69,7 @@ class WebexTeamsInput(InputChannel):
         """
         self.token = access_token
         self.room = room
-        self.api = WebexTeamsAPI(access_token)
+        self.api = WebexAPI(access_token)
 
     async def process_message(
         self,

@@ -1,7 +1,8 @@
 import argparse
 import os
 import sys
-from typing import List, Text
+from typing import Generator, List, Text
+from pathlib import Path
 
 from rasa import telemetry
 from rasa.cli import SubParsersAction
@@ -135,14 +136,14 @@ def init_project(args: argparse.Namespace, path: Text) -> None:
 def create_initial_project(path: Text) -> None:
     """Creates directory structure and templates for initial project."""
     from distutils.dir_util import copy_tree
-
     copy_tree(scaffold_path(), path)
 
 
 def scaffold_path() -> Text:
-    import pkg_resources
-
-    return pkg_resources.resource_filename(__name__, "initial_project")
+    import importlib.resources
+    ref = importlib.resources.files(__name__) / "initial_project"
+    with importlib.resources.as_file(ref) as path:
+        return path.as_posix()
 
 
 def print_cancel() -> None:
