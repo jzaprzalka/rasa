@@ -29,8 +29,10 @@
                 "ms-python.python",
                 "ms-python.vscode-pylance",
                 "ms-python.pylint",
-                "donjayamanne.python-extension-pack"
-            ]        
+                "donjayamanne.python-extension-pack",
+                "tamasfe.even-better-toml",
+                "ms-vscode.makefile-tools"
+            ]
         }
     },
     
@@ -45,7 +47,7 @@
     ],
     // Use 'postCreateCommand' to run commands after the container is created.
     // "updateContentCommand": "make install && make install-docs && cd / && rasa init --no-prompt --init-dir example",
-    "updateContentCommand": "make install && make install-docs",
+    "updateContentCommand": "make install-full && make install-docs",
     // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
     // "remoteUser": "vscode",
     "features": {

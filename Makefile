@@ -108,6 +108,7 @@ static-checks: lint lint-security types
 prepare-spacy:
 	poetry run python -m spacy download en_core_web_md
 	poetry run python -m spacy download de_core_news_sm
+	poetry run python -m spacy download pl_core_news_sm
 
 prepare-mitie:
 	wget --progress=dot:giga -N -P data/ https://github.com/mit-nlp/MITIE/releases/download/v0.4/MITIE-models-v0.2.tar.bz2
