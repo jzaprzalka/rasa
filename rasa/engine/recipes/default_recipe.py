@@ -1008,7 +1008,7 @@ class DefaultV1Recipe(Recipe):
             The resulting configuration including both the provided and
             the automatically configured keys.
         """
-        import importlib.resources
+        import importlib_resources
 
         if keys_to_configure:
             logger.debug(
@@ -1018,8 +1018,8 @@ class DefaultV1Recipe(Recipe):
             )
 
         filename = "config_files/default_config.yml"
-        ref = importlib.resources.files(__name__) / filename
-        with importlib.resources.as_file(ref) as default_config_file:
+        ref = importlib_resources.files(__name__) / filename
+        with importlib_resources.as_file(ref) as default_config_file:
             default_config = rasa.shared.utils.io.read_config_file(default_config_file.as_posix())
 
         config = copy.deepcopy(config)

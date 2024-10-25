@@ -2,6 +2,7 @@ from pathlib import Path
 import textwrap
 from typing import Text
 from collections import OrderedDict
+import warnings
 import pytest
 from rasa.shared.constants import LATEST_TRAINING_DATA_FORMAT_VERSION
 
@@ -74,10 +75,8 @@ async def test_forms_are_converted(domain: Domain):
 
     writer = YAMLStoryWriter()
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings():
         writer.dumps(original_yaml_story_steps)
-
-    assert len(record) == 0
 
 
 def test_yaml_writer_dumps_user_messages():

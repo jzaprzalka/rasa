@@ -140,9 +140,9 @@ def create_initial_project(path: Text) -> None:
 
 
 def scaffold_path() -> Text:
-    import importlib.resources
-    ref = importlib.resources.files(__name__) / "initial_project"
-    with importlib.resources.as_file(ref) as path:
+    import importlib_resources
+    ref = importlib_resources.files(__name__) / "initial_project"
+    with importlib_resources.as_file(ref) as path:
         return path.as_posix()
 
 

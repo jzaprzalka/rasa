@@ -591,7 +591,7 @@ def test_domain_validation_with_invalid_marker(
     )
 
     domain = Domain.empty()
-    with pytest.warns(None):
+    with warnings.catch_warnings():
         is_valid = marker.validate_against_domain(domain)
     assert not is_valid
 

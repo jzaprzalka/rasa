@@ -310,10 +310,10 @@ def _replace_edge_labels_with_nodes(
 
 
 def visualization_html_path() -> Text:
-    import importlib.resources
+    import importlib_resources
     
-    ref = importlib.resources.files(__name__) / VISUALIZATION_TEMPLATE_PATH
-    with importlib.resources.as_file(ref) as path:
+    ref = importlib_resources.files(__name__) / VISUALIZATION_TEMPLATE_PATH
+    with importlib_resources.as_file(ref) as path:
         return path.as_posix()
 
 

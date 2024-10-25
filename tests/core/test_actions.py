@@ -1271,7 +1271,7 @@ async def test_action_extract_slots_predefined_mappings(
     action_extract_slots = ActionExtractSlots(action_endpoint=None)
     tracker = DialogueStateTracker.from_events("sender", evts=[user])
 
-    with pytest.warns(None):
+    with warnings.catch_warnings():
         events = await action_extract_slots.run(
             CollectingOutputChannel(),
             TemplatedNaturalLanguageGenerator(domain.responses),
@@ -2379,7 +2379,7 @@ async def test_action_extract_slots_with_empty_conditions():
 
     action_extract_slots = ActionExtractSlots(None)
 
-    with pytest.warns(None):
+    with warnings.catch_warnings():
         events = await action_extract_slots.run(
             CollectingOutputChannel(),
             TemplatedNaturalLanguageGenerator(domain.responses),

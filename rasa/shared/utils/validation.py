@@ -131,7 +131,7 @@ def validate_yaml_schema(
     from pykwalify.core import Core
     from pykwalify.errors import SchemaError
     from ruamel.yaml import YAMLError
-    import importlib.resources
+    import importlib_resources
     import logging
 
     log = logging.getLogger("pykwalify")
@@ -149,14 +149,14 @@ def validate_yaml_schema(
     except (YAMLError, DuplicateKeyError) as e:
         raise YamlSyntaxException(underlying_yaml_exception=e)
 
-    schema_file_ref = importlib.resources.files(package_name) / schema_path
-    schema_utils_file_ref = importlib.resources.files(PACKAGE_NAME) / RESPONSES_SCHEMA_FILE
-    schema_extensions_ref = importlib.resources.files(PACKAGE_NAME) / SCHEMA_EXTENSIONS_FILE
+    schema_file_ref = importlib_resources.files(package_name) / schema_path
+    schema_utils_file_ref = importlib_resources.files(PACKAGE_NAME) / RESPONSES_SCHEMA_FILE
+    schema_extensions_ref = importlib_resources.files(PACKAGE_NAME) / SCHEMA_EXTENSIONS_FILE
     
     with (
-        importlib.resources.as_file(schema_file_ref) as schema_file,
-        importlib.resources.as_file(schema_utils_file_ref) as schema_utils_file,
-        importlib.resources.as_file(schema_extensions_ref) as schema_extensions,
+        importlib_resources.as_file(schema_file_ref) as schema_file,
+        importlib_resources.as_file(schema_utils_file_ref) as schema_utils_file,
+        importlib_resources.as_file(schema_extensions_ref) as schema_extensions,
     ):
         schema_file = schema_file.as_posix()
         schema_utils_file = schema_utils_file.as_posix()

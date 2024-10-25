@@ -251,7 +251,7 @@ def _fetch_write_key(tool: Text, environment_variable: Text) -> Optional[Text]:
     Returns:
         write key, if a key was present.
     """
-    import importlib.resources
+    import importlib_resources
     from rasa import __name__ as name
 
     if os.environ.get(environment_variable):
@@ -259,8 +259,8 @@ def _fetch_write_key(tool: Text, environment_variable: Text) -> Optional[Text]:
         # overwrite any key provided as part of the package (`keys` file)
         return os.environ.get(environment_variable)
     
-    ref = importlib.resources.files(name) / "keys"
-    with importlib.resources.as_file(ref) as write_key_path:
+    ref = importlib_resources.files(name) / "keys"
+    with importlib_resources.as_file(ref) as write_key_path:
         # noinspection PyBroadException
         try:
             with open(write_key_path) as f:

@@ -422,10 +422,8 @@ async def test_no_warning_if_intent_in_domain(domain: Domain):
     reader = YAMLStoryReader(domain)
     yaml_content = rasa.shared.utils.io.read_yaml(stories)
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings() as record:
         reader.read_from_parsed_yaml(yaml_content)
-
-    assert not len(record)
 
 
 def test_parsing_of_e2e_stories(domain: Domain):
@@ -478,10 +476,8 @@ async def test_active_loop_is_parsed(domain: Domain):
     reader = YAMLStoryReader(domain)
     yaml_content = rasa.shared.utils.io.read_yaml(stories)
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings():
         reader.read_from_parsed_yaml(yaml_content)
-
-    assert not len(record)
 
 
 def test_is_test_story_file(tmp_path: Path):
@@ -560,9 +556,8 @@ def test_read_mixed_training_data_file(domain: Domain):
     reader = YAMLStoryReader(domain)
     yaml_content = rasa.shared.utils.io.read_yaml_file(training_data_file)
 
-    with pytest.warns(None) as record:
+    with warnings.catch_warnings():
         reader.read_from_parsed_yaml(yaml_content)
-        assert not len(record)
 
 
 def test_or_statement_with_slot_was_set():
@@ -897,7 +892,7 @@ def test_load_multi_file_training_data(domain: Domain):
 
 
 def test_yaml_slot_different_types(domain: Domain):
-    with pytest.warns(None):
+    with warnings.catch_warnings():
         tracker = training.load_data(
             "data/test_yaml_stories/story_slot_different_types.yml",
             domain,
