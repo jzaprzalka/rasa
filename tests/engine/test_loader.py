@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 from _pytest.tmpdir import TempPathFactory
@@ -77,7 +77,7 @@ def test_loader_loads_graph_runner(
     )
     config = importer.get_config()
 
-    trained_at = datetime.utcnow()
+    trained_at = datetime.now(timezone.utc)
     with freezegun.freeze_time(trained_at):
         model_metadata = graph_trainer.train(
             GraphModelConfiguration(

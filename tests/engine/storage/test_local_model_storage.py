@@ -1,6 +1,6 @@
 import sys
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from tarsafe import TarSafe
 
@@ -139,7 +139,7 @@ def test_read_long_resource_names_windows(
     rasa.shared.utils.io.dump_obj_as_json_to_file(
         model_dir / MODEL_ARCHIVE_METADATA_FILE,
         ModelMetadata(
-            trained_at=datetime.utcnow(),
+            trained_at=datetime.now(timezone.utc),
             rasa_open_source_version=version,
             model_id="xxxxxxx",
             assistant_id="test_assistant",
@@ -210,7 +210,7 @@ def test_create_model_package(tmp_path_factory: TempPathFactory, domain: Domain)
     persisted_model_dir = tmp_path_factory.mktemp("persisted models")
     archive_path = persisted_model_dir / "my-model.tar.gz"
 
-    trained_at = datetime.utcnow()
+    trained_at = datetime.now(timezone.utc)
     with freezegun.freeze_time(trained_at):
         train_model_storage.create_model_package(
             archive_path,
@@ -263,7 +263,7 @@ def test_read_unsupported_model(
     archive_path = persisted_model_dir / "my-model.tar.gz"
 
     # Create outdated model meta data
-    trained_at = datetime.utcnow()
+    trained_at = datetime.now(timezone.utc)
     model_configuration = GraphModelConfiguration(
         graph_schema,
         graph_schema,

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 import pytest
 
@@ -44,7 +44,7 @@ def test_metadata_serialization(domain: Domain, tmp_path: Path):
         }
     )
 
-    trained_at = datetime.utcnow()
+    trained_at = datetime.now(timezone.utc)
     rasa_version = rasa.__version__
     model_id = "some unique model id"
     assistant_id = "test_assistant"
@@ -87,7 +87,7 @@ def test_metadata_serialization(domain: Domain, tmp_path: Path):
 
 
 def test_metadata_version_check():
-    trained_at = datetime.utcnow()
+    trained_at = datetime.now(timezone.utc)
     old_version = "2.7.2"
     expected_message = (
         f"The model version is trained using Rasa Open Source "
